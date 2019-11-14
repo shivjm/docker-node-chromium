@@ -24,7 +24,7 @@ jobs:
           fetch-depth: 1
       - name: Save metadata
         run: |
-          echo $IMAGE_NAME:node${{ matrix.node }} > .full-image-name
+          echo $IMAGE_NAME:${{ matrix.node }} > .full-image-name
       - name: Build image
         run: |
           docker build . --build-arg NODE_VERSION=${{ matrix.node }} \
