@@ -1,0 +1,38 @@
+name: Build and publish to Docker Hub
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+env:
+  IMAGE_NAME: "shivjm/node-chromium-alpine"
+  DOCKER_REGISTRY:              # defaults to Hub
+
+# there must be some way to reduce the duplication of the environment
+# variables
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [8, 10, 12, 13]
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+      - name: Save metadata
+        run: |
+          echo $IMAGE_NAME:node${{ matrix.node }} > .full-image-name
+      - name: Build image
+        run: |
+          docker build . --build-arg NODE_VERSION=${{ matrix.node }} \
+            -t $(cat .full-image-name)
+      - name: Push image
+        if: github.event_name == 'push'
+        run: |
+          echo ${{ secrets.DOCKER_PASSWORD }} | docker login \
+            -u ${{ secrets.DOCKER_USERNAME }} $DOCKER_REGISTRY \
+            --password-stdin
+          docker push $(cat .full-image-name)
