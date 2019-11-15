@@ -45,6 +45,8 @@ RUN npm prune --quiet --production
 
 FROM shivjm/node-chromium-alpine:13
 
+USER node
+
 WORKDIR /usr/src/app
 
 COPY package.json package-lock.json ./
