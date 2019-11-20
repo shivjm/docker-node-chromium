@@ -39,9 +39,10 @@ COPY package.json package-lock.json ./
 
 RUN npm ci --quiet
 
-RUN npm run --quiet compile-my-code
+COPY . .
 
-RUN npm prune --quiet --production
+RUN npm run --quiet compile-my-code && \
+  npm prune --quiet --production
 
 FROM shivjm/node-chromium-alpine:13
 
