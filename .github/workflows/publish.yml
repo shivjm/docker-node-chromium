@@ -28,6 +28,7 @@ jobs:
       - name: Build image
         run: |
           docker build -q . --build-arg NODE_VERSION=${{ matrix.node }} \
+            --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
             -t $(cat .node-based-image-name)
       - name: Push image
         if: github.event_name != 'pull_request'
