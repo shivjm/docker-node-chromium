@@ -54,4 +54,4 @@ jobs:
           docker tag $NODE_BASED_IMAGE_NAME \
             $IMAGE_NAME:node${NODE_VERSION::-1}-chromium${CHROMIUM_VERSION}
           [[ $(cat .existing-image-hash) != $(cat .new-image-hash) ]] \
-            && docker push $IMAGE_NAME
+            && docker push -a $IMAGE_NAME
