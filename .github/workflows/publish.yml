@@ -45,13 +45,10 @@ jobs:
             -u ${{ secrets.DOCKER_USERNAME }} $DOCKER_REGISTRY \
             --password-stdin
           export NODE_BASED_IMAGE_NAME=$(cat .node-based-image-name)
-          export RAW_NODE_VERSION=$(docker run --rm -t \
-            $NODE_BASED_IMAGE_NAME node --version)
-          export NODE_VERSION=$(echo $RAW_NODE_VERSION | sed 's/^.//' | cut -d '.' -f 1)
           export CHROMIUM_VERSION=$(docker run --rm -t \
             $NODE_BASED_IMAGE_NAME /usr/bin/chromium-browser --version \
             | cut -d ' ' -f 2 | cut -d '.' -f 1)
           docker tag $NODE_BASED_IMAGE_NAME \
-            $IMAGE_NAME:node${NODE_VERSION::-1}-chromium${CHROMIUM_VERSION}
+            $IMAGE_NAME:node${{ matrix.node }}-chromium${CHROMIUM_VERSION}
           [[ $(cat .existing-image-hash) != $(cat .new-image-hash) ]] \
             && docker push -a $IMAGE_NAME
