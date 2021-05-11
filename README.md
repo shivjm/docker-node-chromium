@@ -48,7 +48,7 @@ Multi-stage build to separate development dependencies from
 production:
 
 ```Dockerfile
-FROM node:13-alpine
+FROM node:12-alpine
 
 WORKDIR /usr/src/app-deps
 
@@ -61,7 +61,7 @@ COPY . .
 RUN npm run --quiet compile-my-code && \
   npm prune --quiet --production
 
-FROM shivjm/node-chromium-alpine:13
+FROM shivjm/node-chromium-alpine:12
 
 USER node
 
