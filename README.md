@@ -16,8 +16,15 @@ https://github.com/shivjm/docker-node-chromium-alpine/issues/
 
 ## Tags
 
-See all tags at [Docker Hub
-(shivjm/node-chromium-alpine)](https://hub.docker.com/repository/docker/shivjm/node-chromium-alpine).
+<code>node<var>N</var>-chromium<var>C</var></code>, where <var>N</var> is the Node.js major version number (8, 10, 12, or 14) and <var>C</var> is the Chromium major version number. For example, to use Node.js 14 with Chromium 81, use the `shivjm/node-chromium-alpine:node14-chromium81` image. No `latest` image is provided.
+
+See all available tags at [Docker Hub (shivjm/node-chromium-alpine)](https://hub.docker.com/repository/docker/shivjm/node-chromium-alpine).
+
+## Versioning
+
+The newest version of Chromium provided by Alpine Linux is used.
+
+The version of Alpine Linux depends on [the upstream <code>node:<var>N</var>-alpine</code> image](https://hub.docker.com/_/node?tab=tags&page=1&ordering=last_updated&name=alpine).
 
 ## Example Dockerfiles
 
@@ -74,7 +81,7 @@ ENTRYPOINT ["npm", "start", "--quiet"]
 ## Puppeteer
 
 When you install Puppeteer, it also downloads a known version of
-Chromium to store under `node_modules`, and defaults to using that
+Chromium to store under node_modules, and defaults to using that
 binary. You can skip this download using the environment variable
 `PUPPETEER_SKIP_CHROMIUM_DOWNLOAD`. You’ll also need to set
 `PUPPETEER_EXECUTABLE_PATH` to the installed Chromium. A partial
