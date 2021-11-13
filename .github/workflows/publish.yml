@@ -6,28 +6,26 @@ on:
     branches:
       - master
   schedule:
-    - cron: "0 1 */1 * *"       # 1:00 AM every day
+    - cron: "0 1 */1 * *" # 1:00 AM every day
 
 env:
   IMAGE_NAME: "shivjm/node-chromium-alpine"
-  DOCKER_REGISTRY:              # defaults to Hub
 
 jobs:
   publish:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [8, 10, 12, 13, 14]
+        node: [8, 10, 12, 13, 14, 15, 16, 17]
     steps:
-      - uses: actions/checkout@v1
-        with:
-          fetch-depth: 1
+      - uses: actions/checkout@v2
       - name: Pull existing version
-        run: docker pull $IMAGE_NAME:${{ matrix.node }}
+        run: |
+          docker pull $IMAGE_NAME:${{ matrix.node }} || echo "No existing image"
       - name: Save metadata
         run: |
           echo $IMAGE_NAME:${{ matrix.node }} > .node-based-image-name
-          docker inspect $IMAGE_NAME:${{ matrix.node }} -f '{{.Id}}' \
+          (docker inspect $IMAGE_NAME:${{ matrix.node }} -f '{{.Id}}' || echo "N/A") \
             > .existing-image-hash
       - name: Build image
         run: |
@@ -42,7 +40,7 @@ jobs:
         if: "github.event_name != 'pull_request'"
         run: |
           echo ${{ secrets.DOCKER_PASSWORD }} | docker login \
-            -u ${{ secrets.DOCKER_USERNAME }} $DOCKER_REGISTRY \
+            -u ${{ secrets.DOCKER_USERNAME }} \
             --password-stdin
           export NODE_BASED_IMAGE_NAME=$(cat .node-based-image-name)
           export CHROMIUM_VERSION=$(docker run --rm -t \
