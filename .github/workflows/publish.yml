@@ -20,11 +20,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Pull existing version
-        run: docker pull $IMAGE_NAME:${{ matrix.node }}
+        run: |
+          docker pull $IMAGE_NAME:${{ matrix.node }} || echo "No existing image"
       - name: Save metadata
         run: |
           echo $IMAGE_NAME:${{ matrix.node }} > .node-based-image-name
-          docker inspect $IMAGE_NAME:${{ matrix.node }} -f '{{.Id}}' \
+          (docker inspect $IMAGE_NAME:${{ matrix.node }} -f '{{.Id}}' || echo "N/A") \
             > .existing-image-hash
       - name: Build image
         run: |
