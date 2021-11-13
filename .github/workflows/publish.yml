@@ -18,9 +18,7 @@ jobs:
       matrix:
         node: [8, 10, 12, 13, 14]
     steps:
-      - uses: actions/checkout@v1
-        with:
-          fetch-depth: 1
+      - uses: actions/checkout@v2
       - name: Pull existing version
         run: docker pull $IMAGE_NAME:${{ matrix.node }}
       - name: Save metadata
