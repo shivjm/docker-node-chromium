@@ -48,7 +48,7 @@ Multi-stage build to separate development dependencies from
 production:
 
 ```Dockerfile
-FROM node:12-alpine
+FROM node:12-alpine AS build
 
 WORKDIR /usr/src/app-deps
 
