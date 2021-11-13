@@ -54,12 +54,12 @@ WORKDIR /usr/src/app-deps
 
 COPY package.json package-lock.json ./
 
-RUN npm ci --quiet
+RUN npm ci
 
 COPY . .
 
-RUN npm run --quiet compile-my-code && \
-  npm prune --quiet --production
+RUN npm run compile-my-code && \
+  npm prune --production
 
 FROM shivjm/node-chromium-alpine:12
 
