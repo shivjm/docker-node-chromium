@@ -1,6 +1,6 @@
 # docker-node-chromium-alpine
 
-![](https://img.shields.io/github/workflow/status/shivjm/docker-node-chromium-alpine/Build%20and%20publish%20to%20Docker%20Hub) ![](https://img.shields.io/docker/pulls/shivjm/node-chromium-alpine)
+[![Build and publish to Docker Hub](https://github.com/shivjm/docker-node-chromium-alpine/actions/workflows/publish.yml/badge.svg)](https://github.com/shivjm/docker-node-chromium-alpine/actions/workflows/publish.yml) ![](https://img.shields.io/docker/pulls/shivjm/node-chromium-alpine)
 
 A Docker image with preinstalled Chromium and Node.JS on Alpine Linux.
 Good minimal base image for users of scraping libraries like
