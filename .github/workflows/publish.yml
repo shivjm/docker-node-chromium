@@ -18,10 +18,12 @@ jobs:
       matrix:
         node: [8, 10, 12, 13, 14, 15, 16, 17, 18, 19]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Pull existing version
         run: |
           docker pull $IMAGE_NAME:${{ matrix.node }} || echo "No existing image"
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
       - name: Save metadata
         run: |
           echo $IMAGE_NAME:${{ matrix.node }} > .node-based-image-name
@@ -29,10 +31,11 @@ jobs:
             > .existing-image-hash
       - name: Build image
         run: |
-          docker build -q . --build-arg NODE_VERSION=${{ matrix.node }} \
+          docker buildx build . --build-arg NODE_VERSION=${{ matrix.node }} \
             --cache-from $IMAGE_NAME:${{ matrix.node }} \
             -t $(cat .node-based-image-name) \
             --label org.opencontainers.image.created=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
+            --sbom=true --provenance=true \
             --progress plain
           docker inspect $IMAGE_NAME:${{ matrix.node }} -f '{{.Id}}' \
             > .new-image-hash
