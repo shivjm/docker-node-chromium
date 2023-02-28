@@ -19,30 +19,12 @@ jobs:
         node: [8, 10, 12, 13, 14, 15, 16, 17, 18, 19]
     steps:
       - uses: actions/checkout@v3
-      - name: Pull existing version
-        run: |
-          docker pull $IMAGE_NAME:${{ matrix.node }} || echo "No existing image"
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-      - name: Save metadata
-        run: |
-          echo $IMAGE_NAME:${{ matrix.node }} > .node-based-image-name
-          (docker inspect $IMAGE_NAME:${{ matrix.node }} -f '{{.Id}}' || echo "N/A") \
-            > .existing-image-hash
       - name: Get current date & time
         id: get-date
         run: |
           echo "DATETIME=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
-      - name: Build image
-        run: |
-          docker buildx build . --build-arg NODE_VERSION=${{ matrix.node }} \
-            --cache-from $IMAGE_NAME:${{ matrix.node }} \
-            -t $(cat .node-based-image-name) \
-            --label org.opencontainers.image.created=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
-            --sbom=true --provenance=true \
-            --progress plain
-          docker inspect $IMAGE_NAME:${{ matrix.node }} -f '{{.Id}}' \
-            > .new-image-hash
       - name: Build
         uses: docker/build-push-action@v4
         with:
@@ -51,7 +33,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           labels: |
-            org.opencontainers.image.created=${{ steps.get-date.output.DATETIME }}
+            org.opencontainers.image.created=${{ steps.get-date.outputs.DATETIME }}
           load: true
           push: false
           tags: "${{ env.IMAGE_NAME }}:${{ matrix.node }}"
@@ -59,11 +41,10 @@ jobs:
         if: "github.event_name != 'pull_request'"
         id: chromium-version
         run: |
-          echo -n "CHROMIUM_VERSION=" >> $GITHUB_OUTPUT
-          docker run --rm -t \
+          CHROMIUM_VERSION=$(docker run --rm -t \
             $IMAGE_NAME:${{ matrix.node }} /usr/bin/chromium-browser --version \
-            | cut -d ' ' -f 2 | cut -d '.' -f 1 \
-            >> $GITHUB_OUTPUT
+            | cut -d ' ' -f 2 | cut -d '.' -f 1)
+          echo "CHROMIUM_VERSION=$CHROMIUM_VERSION" >> $GITHUB_OUTPUT
       - name: Log into Docker Hub
         uses: docker/login-action@v2
         if: "github.event_name != 'pull_request'"
@@ -79,8 +60,8 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           labels: |
-            org.opencontainers.image.created=${{ steps.get-date.output.DATETIME }}
+            org.opencontainers.image.created=${{ steps.get-date.outputs.DATETIME }}
           provenance: true
           push: true
           sbom: true
-          tags: "${{ env.IMAGE_NAME }}:node${{ matrix.node }}-chromium${{ steps.chromium-version.output.CHROMIUM_VERSION }}"
+          tags: "${{ env.IMAGE_NAME }}:node${{ matrix.node }}-chromium${{ steps.chromium-version.outputs.CHROMIUM_VERSION }}"
