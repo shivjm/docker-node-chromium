@@ -83,4 +83,4 @@ jobs:
           provenance: true
           push: true
           sbom: true
-          tags: "${{ env.IMAGE_NAME }}:node${{ matrix.node }}-chromium${{ steps.chromium-version.output.DATETIME }}"
+          tags: "${{ env.IMAGE_NAME }}:node${{ matrix.node }}-chromium${{ steps.chromium-version.output.CHROMIUM_VERSION }}"
