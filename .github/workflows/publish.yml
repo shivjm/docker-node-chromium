@@ -18,7 +18,7 @@ jobs:
       matrix:
         node: [8, 10, 12, 13, 14, 15, 16, 17, 18, 19]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Pull existing version
         run: |
           docker pull $IMAGE_NAME:${{ matrix.node }} || echo "No existing image"
