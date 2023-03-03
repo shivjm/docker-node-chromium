@@ -1,6 +1,6 @@
 # docker-node-chromium
 
-[![Build and publish to Docker Hub](https://github.com/shivjm/docker-node-chromium/actions/workflows/publish.yml/badge.svg)](https://github.com/shivjm/docker-node-chromium/actions/workflows/publish.yml) ![](https://img.shields.io/docker/pulls/shivjm/node-chromium)
+[![Build and publish to Docker Hub](https://github.com/shivjm/docker-node-chromium/actions/workflows/publish.yml/badge.svg)](https://github.com/shivjm/docker-node-chromium/actions/workflows/publish.yml) ![https://hub.docker.com/r/shivjm/node-chromium](https://img.shields.io/docker/pulls/shivjm/node-chromium)
 
 A Docker image with preinstalled Chromium and Node.JS on Alpine Linux
 or Debian. Good minimal base image for users of scraping libraries
@@ -16,7 +16,9 @@ https://github.com/shivjm/docker-node-chromium/issues/
 
 ## Tags
 
-See all available tags at [Docker Hub (shivjm/node-chromium)](https://hub.docker.com/repository/docker/shivjm/node-chromium). No `latest` image is provided.
+See all available tags at [Docker Hub
+(shivjm/node-chromium)](https://hub.docker.com/r/shivjm/node-chromium).
+No `latest` image is provided.
 
 ### Alpine Linux
 
@@ -24,7 +26,7 @@ See all available tags at [Docker Hub (shivjm/node-chromium)](https://hub.docker
 
 ### Debian
 
-<code>node<var>N</var>-chromium<var>C</var>-debian</code>, where <var>N</var> is the Node.js major version number (8, 10, 12, 13, 14, 15, 16, 17, 18, or 19) and <var>C</var> is the Chromium major version number. For example, to use Node.js 14 with Chromium 81, use the `shivjm/node-chromium:node14-chromium81-debian` image.
+<code>node<var>N</var>-chromium<var>C</var>-debian</code>, where <var>N</var> is the Node.js major version number (12, 14, 16, 17, 18, or 19) and <var>C</var> is the Chromium major version number. For example, to use Node.js 14 with Chromium 81, use the `shivjm/node-chromium:node14-chromium81-debian` image.
 
 ## Versioning
 
