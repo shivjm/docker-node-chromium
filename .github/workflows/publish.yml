@@ -2,9 +2,13 @@ name: Build and publish to Docker Hub
 
 on:
   pull_request:
+    paths-ignore:
+      - README.md
   push:
     branches:
       - main
+    paths-ignore:
+      - README.md
   schedule:
     - cron: "0 1 */1 * *" # 1:00 AM every day
 
