@@ -16,6 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
+        base: [alpine]
         node: [8, 10, 12, 13, 14, 15, 16, 17, 18, 19]
     steps:
       - uses: actions/checkout@v3
@@ -59,6 +60,7 @@ jobs:
             NODE_VERSION=${{ matrix.node }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          file: "Dockerfile.{{ matrix.base }}"
           labels: |
             org.opencontainers.image.created=${{ steps.get-date.outputs.DATETIME }}
           provenance: true
