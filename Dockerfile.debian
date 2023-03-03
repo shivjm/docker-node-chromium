@@ -1,0 +1,17 @@
+ARG NODE_VERSION
+ARG DEBIAN_VERSION=bullseye
+
+FROM docker.io/library/node:${NODE_VERSION}-${DEBIAN_VERSION}
+
+SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
+
+# Adapted from code by @x80486: https://github.com/shivjm/docker-node-chromium-alpine/issues/6#issuecomment-1345410360
+
+RUN apt-get update -qq && \
+  apt-get -qqy install gnupg wget && \
+  wget --quiet --output-document=- https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmor > /etc/apt/trusted.gpg.d/google-archive.gpg && \
+  sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' && \
+  apt-get -qqy --no-install-recommends install chromium && \
+  rm -f -r /var/lib/apt/lists/*
+
+RUN /usr/bin/chromium --no-sandbox --version > /etc/chromium-version

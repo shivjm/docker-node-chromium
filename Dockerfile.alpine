@@ -24,3 +24,5 @@ RUN apk add -q --update --no-cache \
       ttf-freefont \
       nodejs \
       yarn
+
+RUN /usr/bin/chromium-browser --no-sandbox --version > /etc/chromium-version
