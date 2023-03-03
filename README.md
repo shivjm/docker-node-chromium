@@ -1,37 +1,43 @@
-# docker-node-chromium-alpine
+# docker-node-chromium
 
-[![Build and publish to Docker Hub](https://github.com/shivjm/docker-node-chromium-alpine/actions/workflows/publish.yml/badge.svg)](https://github.com/shivjm/docker-node-chromium-alpine/actions/workflows/publish.yml) ![](https://img.shields.io/docker/pulls/shivjm/node-chromium-alpine)
+[![Build and publish to Docker Hub](https://github.com/shivjm/docker-node-chromium/actions/workflows/publish.yml/badge.svg)](https://github.com/shivjm/docker-node-chromium/actions/workflows/publish.yml) ![](https://img.shields.io/docker/pulls/shivjm/node-chromium)
 
-A Docker image with preinstalled Chromium and Node.JS on Alpine Linux.
-Good minimal base image for users of scraping libraries like
-[Puppeteer](https://github.com/GoogleChrome/puppeteer/).
+A Docker image with preinstalled Chromium and Node.JS on Alpine Linux
+or Debian. Good minimal base image for users of scraping libraries
+like [Puppeteer](https://github.com/GoogleChrome/puppeteer/).
 
 ## Repository
 
-https://github.com/shivjm/docker-node-chromium-alpine/
+https://github.com/shivjm/docker-node-chromium/
 
 ## Issues
 
-https://github.com/shivjm/docker-node-chromium-alpine/issues/
+https://github.com/shivjm/docker-node-chromium/issues/
 
 ## Tags
 
-<code>node<var>N</var>-chromium<var>C</var></code>, where <var>N</var> is the Node.js major version number (8, 10, 12, 13, 14, 15, 16, 17, 18, or 19) and <var>C</var> is the Chromium major version number. For example, to use Node.js 14 with Chromium 81, use the `shivjm/node-chromium-alpine:node14-chromium81` image. No `latest` image is provided.
+See all available tags at [Docker Hub (shivjm/node-chromium)](https://hub.docker.com/repository/docker/shivjm/node-chromium). No `latest` image is provided.
 
-See all available tags at [Docker Hub (shivjm/node-chromium-alpine)](https://hub.docker.com/repository/docker/shivjm/node-chromium-alpine).
+### Alpine Linux
+
+<code>node<var>N</var>-chromium<var>C</var>-alpine</code>, where <var>N</var> is the Node.js major version number (12, 14, 16, 17, 18, or 19) and <var>C</var> is the Chromium major version number. For example, to use Node.js 14 with Chromium 81, use the `shivjm/node-chromium:node14-chromium81-alpine` image.
+
+### Debian
+
+<code>node<var>N</var>-chromium<var>C</var>-debian</code>, where <var>N</var> is the Node.js major version number (8, 10, 12, 13, 14, 15, 16, 17, 18, or 19) and <var>C</var> is the Chromium major version number. For example, to use Node.js 14 with Chromium 81, use the `shivjm/node-chromium:node14-chromium81-debian` image.
 
 ## Versioning
 
-The newest version of Chromium provided by Alpine Linux is used.
+The newest version of Chromium provided by Alpine Linux or Debian is used.
 
-The version of Alpine Linux depends on [the upstream <code>node:<var>N</var>-alpine</code> image](https://hub.docker.com/_/node?tab=tags&page=1&ordering=last_updated&name=alpine).
+The version of the base distribution depends on [the upstream Node images](https://hub.docker.com/_/node?tab=tags&page=1&ordering=last_updated).
 
 ## Example Dockerfiles
 
 Simple:
 
 ```Dockerfile
-FROM shivjm/node-chromium-alpine
+FROM shivjm/node-chromium:node14-chromium99-alpine
 
 WORKDIR /usr/src/app
 
@@ -61,7 +67,7 @@ COPY . .
 RUN npm run compile-my-code && \
   npm prune --production
 
-FROM shivjm/node-chromium-alpine:12
+FROM shivjm/node-chromium:node18-chromium108-debian
 
 USER node
 
