@@ -9,15 +9,15 @@ on:
     - cron: "0 1 */1 * *" # 1:00 AM every day
 
 env:
-  IMAGE_NAME: "shivjm/node-chromium-alpine"
+  IMAGE_NAME: "shivjm/node-chromium"
 
 jobs:
   publish:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        base: [alpine]
-        node: [8, 10, 12, 13, 14, 15, 16, 17, 18, 19]
+        base: [alpine, debian]
+        node: [12, 14, 16, 17, 18, 19]
     steps:
       - uses: actions/checkout@v3
       - name: Set up Docker Buildx
@@ -33,6 +33,7 @@ jobs:
             NODE_VERSION=${{ matrix.node }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          file: "Dockerfile.${{ matrix.base }}"
           labels: |
             org.opencontainers.image.created=${{ steps.get-date.outputs.DATETIME }}
           load: true
@@ -43,7 +44,7 @@ jobs:
         id: chromium-version
         run: |
           CHROMIUM_VERSION=$(docker run --rm -t \
-            $IMAGE_NAME:${{ matrix.node }} /usr/bin/chromium-browser --version \
+            $IMAGE_NAME:${{ matrix.node }} cat /etc/chromium-version \
             | cut -d ' ' -f 2 | cut -d '.' -f 1)
           echo "CHROMIUM_VERSION=$CHROMIUM_VERSION" >> $GITHUB_OUTPUT
       - name: Log into Docker Hub
@@ -60,10 +61,10 @@ jobs:
             NODE_VERSION=${{ matrix.node }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          file: "Dockerfile.{{ matrix.base }}"
+          file: "Dockerfile.${{ matrix.base }}"
           labels: |
             org.opencontainers.image.created=${{ steps.get-date.outputs.DATETIME }}
           provenance: true
           push: true
           sbom: true
-          tags: "${{ env.IMAGE_NAME }}:node${{ matrix.node }}-chromium${{ steps.chromium-version.outputs.CHROMIUM_VERSION }}"
+          tags: "${{ env.IMAGE_NAME }}:node${{ matrix.node }}-chromium${{ steps.chromium-version.outputs.CHROMIUM_VERSION }}-${{ matrix.base }}"
