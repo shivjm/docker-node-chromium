@@ -9,8 +9,7 @@ on:
       - main
     paths-ignore:
       - README.md
-  schedule:
-    - cron: "0 1 */1 * *" # 1:00 AM every day
+  workflow_dispatch: {}
 
 env:
   IMAGE_NAME: "shivjm/node-chromium"
