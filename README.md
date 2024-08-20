@@ -2,9 +2,7 @@
 
 [![Build and publish to Docker Hub](https://github.com/shivjm/docker-node-chromium/actions/workflows/publish.yml/badge.svg)](https://github.com/shivjm/docker-node-chromium/actions/workflows/publish.yml) ![https://hub.docker.com/r/shivjm/node-chromium](https://img.shields.io/docker/pulls/shivjm/node-chromium)
 
-A Docker image with preinstalled Chromium and Node.JS on Alpine Linux
-or Debian. Good minimal base image for users of scraping libraries
-like [Puppeteer](https://github.com/GoogleChrome/puppeteer/).
+A Docker image with preinstalled Chromium and Node.JS on Alpine Linux or Debian. Good minimal base image for users of scraping libraries like [Puppeteer](https://github.com/GoogleChrome/puppeteer/).
 
 ## Repository
 
@@ -16,17 +14,15 @@ https://github.com/shivjm/docker-node-chromium/issues/
 
 ## Tags
 
-See all available tags at [Docker Hub
-(shivjm/node-chromium)](https://hub.docker.com/r/shivjm/node-chromium).
-No `latest` image is provided.
+See all available tags at [Docker Hub (shivjm/node-chromium)](https://hub.docker.com/r/shivjm/node-chromium). No `latest` image is provided.
 
 ### Alpine Linux
 
-<code>node<var>N</var>-chromium<var>C</var>-alpine</code>, where <var>N</var> is the Node.js major version number (12, 14, 16, 17, 18, or 19) and <var>C</var> is the Chromium major version number. For example, to use Node.js 14 with Chromium 81, use the `shivjm/node-chromium:node14-chromium81-alpine` image.
+<code>node<var>N</var>-chromium<var>C</var>-alpine</code>, where <var>N</var> is the Node.js major version number (12, 14, 16, 17, 18, 19, 20, or 22) and <var>C</var> is the Chromium major version number. For example, to use Node.js 14 with Chromium 81, use the `shivjm/node-chromium:node14-chromium81-alpine` image.
 
 ### Debian
 
-<code>node<var>N</var>-chromium<var>C</var>-debian</code>, where <var>N</var> is the Node.js major version number (12, 14, 16, 17, 18, or 19) and <var>C</var> is the Chromium major version number. For example, to use Node.js 14 with Chromium 81, use the `shivjm/node-chromium:node14-chromium81-debian` image.
+<code>node<var>N</var>-chromium<var>C</var>-debian</code>, where <var>N</var> is the Node.js major version number (12, 14, 16, 17, 18, 19, 20, or 22) and <var>C</var> is the Chromium major version number. For example, to use Node.js 14 with Chromium 81, use the `shivjm/node-chromium:node14-chromium81-debian` image.
 
 ## Versioning
 
@@ -88,12 +84,7 @@ ENTRYPOINT ["npm", "start", "--quiet"]
 
 ## Puppeteer
 
-When you install Puppeteer, it also downloads a known version of
-Chromium to store under node_modules, and defaults to using that
-binary. You can skip this download using the environment variable
-`PUPPETEER_SKIP_CHROMIUM_DOWNLOAD`. You’ll also need to set
-`PUPPETEER_EXECUTABLE_PATH` to the installed Chromium. A partial
-example:
+When you install Puppeteer, it also downloads a known version of Chromium to store under node_modules, and defaults to using that binary. You can skip this download using the environment variable `PUPPETEER_SKIP_CHROMIUM_DOWNLOAD`. You’ll also need to set `PUPPETEER_EXECUTABLE_PATH` to the installed Chromium. A partial example:
 
 ```Dockerfile
 # (setup elided)
