@@ -1,0 +1,31 @@
+name: Build and publish to Docker Hub
+
+when:
+  - event: pull_request
+    path:
+      exclude: ["README.md"]
+  - event: push
+    branch: main
+    path:
+      exclude: ["README.md"]
+  - event: manual
+
+matrix:
+  BASE: [alpine, debian]
+  NODE: [12, 14, 16, 17, 18, 19, 20, 22]
+
+variables:
+  IMAGE_NAME: "shivjm/node-chromium"
+
+steps:
+  - name: Build & publish image
+    image: debian
+    commands:
+      - OUTPUT_IMAGE=$(bash ./scripts/build.sh $BASE $NODE $IMAGE_NAME)
+      - |
+        [[ -n "$CI_COMMIT_PULL_REQUEST" ]] && echo "$DOCKER_PASSWORD" | bash ./scripts/publish.sh "$OUTPUT_IMAGE" "$DOCKER_USERNAME"
+    environment:
+      DOCKER_USERNAME:
+        from_secret: DOCKER_USERNAME
+      DOCKER_PASSWORD:
+        from_secret: DOCKER_PASSWORD
